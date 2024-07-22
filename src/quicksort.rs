@@ -17,13 +17,17 @@ fn quicksort<T: Ord>(slice: &mut [T]) {
     let (pivot, rest) = slice.split_first_mut().expect("rest is non-empty");
     let mut left = 0;
     let mut right = rest.len() - 1;
-    while left <= right {
+    while right != usize::MAX && left <= right {
         if &rest[left] <= pivot {
             // already on correct side
             left += 1;
         } else if &rest[right] > pivot {
             // right already on the correct side
             // avoid unecessary swap
+            if right == 0 {
+                // we must be done
+                break;
+            }
             right -= 1;
         } else {
             // left holds a right, and right holds a left
